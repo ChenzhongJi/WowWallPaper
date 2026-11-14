@@ -1,0 +1,16 @@
+# Build output
+bin/
+obj/
+dist/
+artifacts/
+*.user
+*.suo
+.vs/
+
+# Local data
+.wowwallpaper-data/
+*.log
+
+# OS noise
+Thumbs.db
+Desktop.ini
