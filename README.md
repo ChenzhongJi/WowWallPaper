@@ -37,6 +37,10 @@
 4. 关闭窗口会缩到托盘；托盘菜单可以打开主界面、切下一张、暂停 / 继续、静音、停止壁纸或退出。
 5. **停止壁纸** 会恢复应用启动时记录的 Windows 原始壁纸；如果原始壁纸路径无法读取，则保持当前桌面壁纸不变。
 
+## 下载
+
+预编译的自包含版本发布在 [GitHub Releases](https://github.com/ChenzhongJi/WowWallPaper/releases/latest)。下载后请**完整解压整个文件夹**，保留 `libvlc` 子目录，再运行 `WowWallPaper.exe`。
+
 支持的图片扩展名：`jpg / jpeg / jfif / png / bmp / gif / webp / tif / tiff`。  
 支持的视频扩展名：`mp4 / m4v / wmv / avi / mov / mpg / mpeg / mkv / webm`。  
 注意：扩展名在筛选器中可用，不代表系统一定装有对应解码器。
@@ -163,6 +167,10 @@ src/WowWallPaper/
 ```
 
 视频引擎联调时，可通过环境变量 `WOWWALLPAPER_HOST_HWND` 指定一个测试桌面宿主窗口句柄；正常使用不需要设置。
+
+## 许可证
+
+本项目使用 [MIT License](LICENSE)。
 
 ---
 
