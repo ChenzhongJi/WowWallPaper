@@ -41,6 +41,8 @@
 
 预编译的自包含版本发布在 [GitHub Releases](https://github.com/ChenzhongJi/WowWallPaper/releases/latest)。下载后请**完整解压整个文件夹**，保留 `libvlc` 子目录，再运行 `WowWallPaper.exe`。
 
+> **开机恢复**：从 1.0.1 起，开机自动启动默认开启。视频壁纸要在重启后继续显示，应用必须在登录 Windows 后运行；如果关闭“开机自动启动”，重启后需要手动打开应用。
+
 支持的图片扩展名：`jpg / jpeg / jfif / png / bmp / gif / webp / tif / tiff`。  
 支持的视频扩展名：`mp4 / m4v / wmv / avi / mov / mpg / mpeg / mkv / webm`。  
 注意：扩展名在筛选器中可用，不代表系统一定装有对应解码器。
@@ -131,6 +133,7 @@ $env:WOWWALLPAPER_DATA_DIR = 'D:\WowWallPaper-Data'
 | 视频壁纸没有出现，或提示“正在等待 Windows 桌面层” | 确认 Explorer 正在运行；不要以管理员身份启动；确认 `libvlc\win-x64\` 与 exe 一起存在；尝试重启应用。 |
 | 视频壁纸启动但桌面没有变化 | 查看 `app.log` 中是否有 `VLC state: Playing` 和 `VLC desktop host acquired ... raised-layered`。若日志显示 Low Integrity，请从资源管理器正常启动，不要从聊天文件预览/沙箱启动。 |
 | 视频黑屏 / 无法播放 | 视频编码可能不受 LibVLC 支持。用 FFmpeg 转成 H.264 MP4：`ffmpeg -i input.mkv -c:v libx264 -pix_fmt yuv420p -c:a aac output.mp4`。 |
+| 重启后视频壁纸消失 | 1.0.1 起“开机自动启动”默认开启，应用会在登录后自动恢复上次壁纸。若仍消失：打开设置确认开机自动启动未被关闭；在 Windows 设置 → 应用 → 启动中确认 WowWallPaper 未被禁用；查看日志是否有 `Startup=True` 和 `VLC state: Playing`。 |
 | 重启 Explorer 后视频消失 | 正常情况下健康检查会自动重新挂载；如未恢复，查看 `app.log` 中 VLC host 相关记录。 |
 | 关闭窗口后找不到应用 | 查看系统托盘溢出区，双击托盘图标打开；或在托盘菜单退出。 |
 
@@ -174,4 +177,4 @@ src/WowWallPaper/
 
 ---
 
-WowWallPaper 1.0.0 · 原生 Windows 壁纸引擎
+WowWallPaper 1.0.1 · 原生 Windows 壁纸引擎

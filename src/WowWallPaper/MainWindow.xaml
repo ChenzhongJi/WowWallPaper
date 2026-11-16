@@ -811,7 +811,7 @@
                                         <Grid>
                                             <StackPanel>
                                                 <TextBlock Text="开机自动启动" Style="{StaticResource SettingTitleStyle}" />
-                                                <TextBlock Text="登录 Windows 后自动在托盘中恢复上次的壁纸。" Style="{StaticResource SettingDescriptionStyle}" />
+                                                <TextBlock Text="登录 Windows 后自动在托盘中恢复上次的壁纸。默认开启；关闭后重启不会保留视频壁纸。" Style="{StaticResource SettingDescriptionStyle}" />
                                             </StackPanel>
                                             <ToggleButton Style="{StaticResource ToggleSwitchStyle}" IsChecked="{Binding RunAtStartup, Mode=TwoWay}"
                                                           HorizontalAlignment="Right" VerticalAlignment="Center" />

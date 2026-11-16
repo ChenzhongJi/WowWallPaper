@@ -33,6 +33,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     private bool _isApplying;
     private bool _initialized;
     private bool _disposed;
+    private string? _startupRegistrationError;
     private PlaybackState _videoState = PlaybackState.Stopped;
 
     public MainViewModel(
@@ -44,7 +45,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
         _startupService = startupService;
         _thumbnailService = thumbnailService;
         _settings = settingsService.Load();
-        _settings.RunAtStartup = _startupService.IsEnabled();
+        _startupRegistrationError = ReconcileStartupSetting();
         _controller = new WallpaperController(_settings);
         _controller.PlaybackStateChanged += OnPlaybackStateChanged;
 
@@ -162,7 +163,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
 
     public RelayCommand ExitCommand { get; }
 
-    public string VersionText => "WowWallPaper 1.0.0";
+    public string VersionText => "WowWallPaper 1.0.1";
 
     public string DataDirectory => AppPaths.DataDirectory;
 
@@ -508,6 +509,12 @@ public sealed class MainViewModel : ObservableObject, IDisposable
         }
 
         _initialized = true;
+        if (!string.IsNullOrWhiteSpace(_startupRegistrationError))
+        {
+            PostNotice("无法设置开机自动启动：" + _startupRegistrationError, NoticeKind.Error);
+            _startupRegistrationError = null;
+        }
+
         try
         {
             _controller.Initialize();
@@ -1008,6 +1015,31 @@ public sealed class MainViewModel : ObservableObject, IDisposable
     private void SaveSettings()
     {
         _settingsService.Save(_settings);
+    }
+
+    /// <summary>
+    /// Keeps the HKCU Run entry in sync with the persisted preference. A new
+    /// profile defaults to enabled so a selected wallpaper survives a reboot.
+    /// Running this on every launch also repairs a stale path after the app is
+    /// moved, and restores the preference after the registry was cleared.
+    /// </summary>
+    private string? ReconcileStartupSetting()
+    {
+        string? error = null;
+        if (_settings.RunAtStartup)
+        {
+            if (!_startupService.TrySetEnabled(true, out error))
+            {
+                _settings.RunAtStartup = false;
+            }
+        }
+        else
+        {
+            _startupService.TrySetEnabled(false, out _);
+        }
+
+        _settingsService.Save(_settings);
+        return error;
     }
 
     private void RevealInExplorer(WallpaperItemViewModel item)

@@ -44,10 +44,12 @@ public sealed class StartupService
                 }
 
                 key.SetValue(ValueName, command, RegistryValueKind.String);
+                AppLog.Info($"Startup registration enabled: {command}");
             }
             else
             {
                 key.DeleteValue(ValueName, throwOnMissingValue: false);
+                AppLog.Info("Startup registration disabled.");
             }
 
             error = null;

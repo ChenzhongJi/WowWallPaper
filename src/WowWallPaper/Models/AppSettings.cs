@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using WowWallPaper.Infrastructure;
 
 namespace WowWallPaper.Models;
@@ -25,8 +24,7 @@ public sealed class AppSettings
 
     public bool Shuffle { get; set; }
 
-    [JsonIgnore]
-    public bool RunAtStartup { get; set; }
+    public bool RunAtStartup { get; set; } = true;
 
     public bool CloseToTray { get; set; } = true;
 
