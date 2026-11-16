@@ -163,7 +163,7 @@ public sealed class MainViewModel : ObservableObject, IDisposable
 
     public RelayCommand ExitCommand { get; }
 
-    public string VersionText => "WowWallPaper 1.0.1";
+    public string VersionText => "WowWallPaper 1.0.2";
 
     public string DataDirectory => AppPaths.DataDirectory;
 

@@ -1,0 +1,59 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  windows-build:
+    runs-on: windows-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/WowWallPaper.slnx') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore
+        run: dotnet restore WowWallPaper.slnx
+
+      - name: Build
+        run: dotnet build WowWallPaper.slnx -c Release --no-restore
+
+      - name: Publish self-contained package
+        shell: powershell
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/publish.ps1 -Runtime win-x64 -SelfContained -Zip
+
+      - name: Verify video runtime and notices
+        shell: pwsh
+        run: |
+          $out = "dist/WowWallPaper-win-x64"
+          $required = @(
+            "$out/WowWallPaper.exe",
+            "$out/libvlc/win-x64/libvlc.dll",
+            "$out/THIRD-PARTY-NOTICES.md",
+            "$out/LICENSE",
+            "$out/licenses/VLC-COPYING.txt",
+            "$out/licenses/VLC-COPYING.LIB.txt"
+          )
+          foreach ($path in $required) {
+            if (-not (Test-Path -LiteralPath $path)) {
+              throw "Missing packaged file: $path"
+            }
+          }
+          Write-Host "Package verification passed."

@@ -1,5 +1,7 @@
 # WowWallPaper
 
+[![build](https://github.com/ChenzhongJi/WowWallPaper/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/ChenzhongJi/WowWallPaper/actions/workflows/build.yml)
+
 一个原生 Windows 图片 / 视频桌面壁纸引擎。添加本地图片或视频，一键设为桌面壁纸；支持壁纸库、自动轮播、多显示器、系统托盘、开机启动和资源管理器重启后的自动恢复。
 
 ![壁纸库](docs/preview-library.png)
@@ -16,7 +18,7 @@
 - **自动轮播**：按 1 分钟到 24 小时的间隔切换，可随机顺序；手动“下一张”会重置轮播计时。
 - **视频体验**：默认静音、循环播放、全屏应用时自动暂停、系统锁屏 / 睡眠时自动暂停。
 - **可靠恢复**：监视 Explorer 重启、显示器变化和桌面窗口失效，自动重新挂载动态壁纸。
-- **托盘与启动**：关闭窗口可最小化到托盘，可设置开机自动启动，支持单实例运行。
+- **托盘与启动**：关闭窗口可最小化到托盘；开机自动启动默认开启，登录后自动恢复上次壁纸，支持单实例运行。
 - **深色现代界面**：自绘标题栏、圆角卡片、深色下拉框 / 开关 / 滚动条，支持高 DPI。
 
 ## 系统要求
@@ -171,10 +173,20 @@ src/WowWallPaper/
 
 视频引擎联调时，可通过环境变量 `WOWWALLPAPER_HOST_HWND` 指定一个测试桌面宿主窗口句柄；正常使用不需要设置。
 
+## 第三方组件
+
+WowWallPaper 自身使用 MIT License。发布包还包含 / 动态加载以下第三方组件：
+
+- **LibVLC / VLC**：LGPL-2.1-or-later（libvlc）与 GPL-2.0-or-later（VLC 模块）
+- **LibVLCSharp**：LGPL-2.1-or-later
+- **.NET 10 Desktop Runtime / WPF**：MIT
+
+完整许可证文本和源码链接见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md) 与 [`licenses/`](licenses/)。发布包会在 `libvlc\win-x64\` 中动态加载未修改的 LibVLC，用户可以替换为兼容的 LibVLC 构建。
+
 ## 许可证
 
 本项目使用 [MIT License](LICENSE)。
 
 ---
 
-WowWallPaper 1.0.1 · 原生 Windows 壁纸引擎
+WowWallPaper 1.0.2 · 原生 Windows 壁纸引擎

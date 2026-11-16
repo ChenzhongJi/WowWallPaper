@@ -65,6 +65,23 @@ if (-not (Test-Path -LiteralPath $exe)) {
     throw "Published executable not found: $exe"
 }
 
+# Ship the project license and the third-party notices with every build.
+foreach ($noticeName in @('LICENSE', 'THIRD-PARTY-NOTICES.md')) {
+    $noticePath = Join-Path $root $noticeName
+    if (-not (Test-Path -LiteralPath $noticePath)) {
+        throw "Required notice file not found: $noticePath"
+    }
+
+    Copy-Item -LiteralPath $noticePath -Destination $outputPath -Force
+}
+
+$licensesSource = Join-Path $root 'licenses'
+if (-not (Test-Path -LiteralPath $licensesSource)) {
+    throw "License directory not found: $licensesSource"
+}
+
+Copy-Item -LiteralPath $licensesSource -Destination $outputPath -Recurse -Force
+
 if ($Zip) {
     $zipPath = Join-Path $distRoot "$name.zip"
     if (Test-Path -LiteralPath $zipPath) {
